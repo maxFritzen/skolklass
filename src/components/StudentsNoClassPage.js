@@ -17,11 +17,23 @@ class StudentsNoClassPage extends React.Component {
     const studentId = this.state.studentId;
 
     const classId = this.state.classId;
-    if (this.props.classes[classId] && this.props.students[studentId]) {
+    const {classes, students} = this.props;
+
+    if (!this.state.studentId || !this.state.classId) {
+      return this.setState({message: 'Fyll i båda fälten'});
+    }
+
+    if (students[studentId].classId === classId) {
+      this.setState({message: 'Eleven verkar redan vara inlagd i klassen'});
+    }
+    else if (classes[classId] && students[studentId]) {
       return this.props.addStudent(classId, studentId).then(() => {
-        return this.props.editStudent(studentId, classId);
+        return this.props.editStudent(studentId, classId).then(() => {
+          this.setState({message: 'Eleven tillagd!'});
+        });
       });
-    } else {
+    }
+    else {
       this.setState({message: 'Knas! Finns eleven och klassen?'});
     }
 
@@ -38,6 +50,7 @@ class StudentsNoClassPage extends React.Component {
       classId: e.target.value
     });
   };
+
   renderList = () => {
     const students = this.props.students;
     const list = [];

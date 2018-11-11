@@ -33,7 +33,7 @@ export const fetchClasses = () => {
 
 export const fetchStudents = () => {
   return (dispatch) => database.ref().once('value', (snapshot) => {
-    if (snapshot.val().students) {
+    if (snapshot.val()) {
       dispatch({
         type: FETCH_STUDENTS,
         students: snapshot.val().students || {}

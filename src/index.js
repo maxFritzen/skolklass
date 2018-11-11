@@ -22,7 +22,7 @@ const App = () => (
         <Route path="/elever-utan-klass" component={StudentsNoClassPage} />
         <Route path="/lagg-till-elev" component={CreateStudentPage} />
         <Route path="/klass" component={ClassPage} />
-        <Route path="/" component={ClassPage} />
+        <Route path="/" component={CreateStudentPage} />
       </Switch>
     </BrowserRouter>
   </Provider>
