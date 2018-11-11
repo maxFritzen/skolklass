@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "dev": "webpack-dev-server --mode development"
+    "dev": "webpack-dev-server --mode development",
+    "build": "webpack --mode=production",
+    "start": "node server/server.js"
   },
   "author": "Max Fritzén",
   "license": "ISC",
@@ -26,6 +28,7 @@
   },
   "dependencies": {
     "babel-loader": "^8.0.4",
+    "express": "^4.16.4",
     "firebase": "^5.5.7",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
