@@ -8,7 +8,8 @@ class StudentsNoClassPage extends React.Component {
     super(props);
     this.state = {
       studentId: '',
-      classId: ''
+      classId: '',
+      message: ''
     }
   }
   handleOnSubmit = (e) => {
@@ -16,12 +17,14 @@ class StudentsNoClassPage extends React.Component {
     const studentId = this.state.studentId;
 
     const classId = this.state.classId;
-    console.log(classId);
-    // this.props.editStudent(studentId, classId);
-    // this.props.addStudent(classId, studentId);
-    return this.props.addStudent(classId, studentId).then(() => {
-      return this.props.editStudent(studentId, classId);
-    });
+    if (this.props.classes[classId] && this.props.students[studentId]) {
+      return this.props.addStudent(classId, studentId).then(() => {
+        return this.props.editStudent(studentId, classId);
+      });
+    } else {
+      this.setState({message: 'Knas! Finns eleven och klassen?'});
+    }
+
   }
 
   onStudentIdChange = (e) => {
@@ -38,17 +41,15 @@ class StudentsNoClassPage extends React.Component {
   renderList = () => {
     const students = this.props.students;
     const list = [];
-    console.log(students);
     for(var studentId in students) {
       const classId = students[studentId].classId;
       if (!classId) {
         list.push(
-          <li key={studentId}>
-            {students[studentId].id}
-            {students[studentId].fname}
-            {students[studentId].lname}
-          </li>
-
+          <tr key={studentId}>
+            <td>{students[studentId].id}</td>
+            <td>{students[studentId].fname}</td>
+            <td>{students[studentId].lname}</td>
+          </tr>
         );
       }
     }
@@ -60,24 +61,34 @@ class StudentsNoClassPage extends React.Component {
       <div>
         <Header />
         <h1>Elever utan klass</h1>
-        <ul>
-          {this.renderList()}
-        </ul>
+        <table>
+          <tbody>
+            <tr>
+              <th>Personnummer</th>
+              <th>Förnamn</th>
+              <th>Efternamn</th>
+            </tr>
+            {this.renderList()}
+          </tbody>
+
+        </table>
+
         <form onSubmit={this.handleOnSubmit}>
           <h2>Lägg till elev i klass</h2>
           <input
             placeholder="elevens personnummer"
-            value={this.value}
+            value={this.state.value}
             onChange={this.onStudentIdChange}
           />
 
           <input
             placeholder="Klass"
-            value={this.value}
+            value={this.state.value}
             onChange={this.onClassChange}
           />
           <input type="submit" />
         </form>
+        <p>{this.state.message}</p>
       </div>
     );
   }

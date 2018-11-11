@@ -14,6 +14,10 @@ class ClassPage extends React.Component {
     return (
       <div>
         <Header />
+        <p>
+          Här kan du skapa en ny klass. Nedan visas en lista på klasser.
+          Klicka på en klass för att visa dess elever.
+        </p>
         <CreateClass
           classes={this.props.classes}
           onSubmit = {this.props.startCreateClass}

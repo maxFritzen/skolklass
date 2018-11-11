@@ -12,18 +12,15 @@ export default class CreateClass extends React.Component {
 
   handleOnSubmit = (e) => {
     e.preventDefault();
-    if (this.props.classes) {
-      if (!this.props.classes[this.state.value]) {
-        this.props.onSubmit(this.state.value).then(() => {
-          this.setState({message: 'Klass skapad!'});
-        });
-      } else {
-        this.setState({ message: 'Den här klassen verkar redan vara skapad.' })
-      }
-    } else {
+    if (!this.state.value) {
+      return this.setState({ message: 'Var vänlig fyll i textfältet och försök igen.' });
+    }
+    if (!this.props.classes[this.state.value]) {
       this.props.onSubmit(this.state.value).then(() => {
         this.setState({message: 'Klass skapad!'});
       });
+    } else {
+      this.setState({ message: 'Den här klassen verkar redan vara skapad.' })
     }
 
   };

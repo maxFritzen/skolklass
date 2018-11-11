@@ -10,6 +10,7 @@ class ListClasses extends React.Component {
       selectedClassId: ''
     };
   };
+
   handleOnClick = (id) => {
 
     this.setState({selectedClassId: id}, () => {
@@ -17,17 +18,13 @@ class ListClasses extends React.Component {
         showStudents: true,
       });
     });
+  };
 
-
-  }
   renderList = () => {
     if (this.props.classes) {
 
     const classes = this.props.classes;
     const listOfClasses = Object.keys(classes).map((key) => {
-      // När onClick: visa elever i klassen.
-      // Det betyder: loopa igenom klassen, hitta alla elever med tillhörande id.
-      // Här är listitem inte ett object utan bara en array med classId som string.
       return (
         <li
           key={key}
@@ -40,19 +37,43 @@ class ListClasses extends React.Component {
     return listOfClasses;
 
     }
-  }
+  };
+
+  renderStudentList = () => {
+    const selectedClassId = this.props.classes[this.state.selectedClassId];
+
+    const list = selectedClassId.map((studentId) => {
+        if (studentId != 0) {
+          const {fname,lname,id,classId} = this.props.students[studentId];
+          return (
+            <tr key={studentId}>
+              <td>{id}</td>
+              <td>{fname}</td>
+              <td>{lname}</td>
+              <td>
+                <button
+                  key={`${studentId}-btn`}
+                  onClick={() => this.removeStudent(classId,id)}
+                  >
+                  Ta bort elev från klassen
+                </button>
+              </td>
+            </tr>
+            );
+          }
+        });
+    return list;
+
+  };
 
   removeStudent = (classId, studentId) => {
     return this.props.removeStudent(classId, studentId).then(() => {
       return this.props.editStudent(studentId, null);
     });
-
-
-  }
+  };
 
   render() {
     const selectedClassId = this.props.classes[this.state.selectedClassId];
-    console.log(selectedClassId);
     return (
       <div>
         <ul>
@@ -60,19 +81,17 @@ class ListClasses extends React.Component {
         </ul>
         <ul>
         {this.state.showStudents ? (
-          selectedClassId.map((studentId) => {
-            const student = this.props.students[studentId];
-            console.log(student);
-            if (studentId != 0) return (
-              <div key={`${studentId}div`}>
-              <li key={studentId}>
-                {`${student.fname} - ${student.lname} : ${student.id}`}
-              </li>
-              <button key={`${studentId}btn`}onClick={() => this.removeStudent(student.classId,student.id)}></button>
-            </div>
-            )
-            // if (studentId != 0) return <li key={studentId}>{studentId}</li>
-          })
+          <table>
+            <tbody>
+              <tr>
+                <th>Personnummer</th>
+                <th>Förnamn</th>
+                <th>Efternamn</th>
+              </tr>
+              {this.renderStudentList()}
+            </tbody>
+          </table>
+
         ) : (<p>Ingen klass vald</p>)
 
         }

@@ -21,16 +21,6 @@ export default (state = {}, action) => {
         ...state,
       [action.classId]: [...oldClass, action.studentId]
       };
-    // case ADD_STUDENT_TO_CLASS:
-    // const oldClass = state[action.classId];
-    //   return {
-    //     ...state,
-    //   [action.classId]: {
-    //     ...oldClass,
-    //     [action.studentId] : action.studentId
-    //   }
-    //   //[action.classId]: {}...arr, action.studentId]
-    //   };
 
     case REMOVE_STUDENT_FROM_CLASS:
       const filteredArray = state[action.classId].filter(id => id != action.studentId);

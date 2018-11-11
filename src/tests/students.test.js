@@ -21,7 +21,6 @@ test('Should add Student to database', () => {
   };
 
   const state = reducer(undefined, action);
-  //console.log(JSON.stringify(state, null, 2));
   expect(state['123']).toEqual(student);
 });
 
